@@ -1,4 +1,5 @@
 import strawberry
+from enum import Enum
 from typing import Optional
 from graphql import DirectiveLocation
 
@@ -7,17 +8,25 @@ from graphql import DirectiveLocation
 class Node:
     id: Optional[strawberry.ID]
 
+@strawberry.enum
+class StringTest(Enum):
+    A = "c"
+    B = "i"
+    C = "a"
+    D = "o"
+
 @strawberry.type
-class User(Node):
+class User:
     name: str
     age: int
-    id: Optional[strawberry.ID]
+    enum: StringTest
+    id: Optional[strawberry.ID] = None
 
 @strawberry.type
 class Query:
     @strawberry.field
     def user(self, info) -> User:
-        return User(name="Patrick", age=100)
+        return User(name="Patrick", age=100, enum=StringTest.A)
 
 
 @strawberry.directive(
